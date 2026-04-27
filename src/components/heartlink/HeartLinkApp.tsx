@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import portrait1 from "@/assets/portrait-1.jpg";
 import portrait2 from "@/assets/portrait-2.jpg";
 import portrait3 from "@/assets/portrait-3.jpg";
@@ -61,9 +62,12 @@ export function HeartLinkApp() {
           <span className="hover:text-bone transition-colors cursor-pointer">Sparks</span>
           <span className="hover:text-bone transition-colors cursor-pointer">Plus</span>
         </nav>
-        <button className="text-[10px] tracking-[0.25em] uppercase text-ember border border-ember/30 px-4 py-2 hover:bg-ember/10 transition-colors">
+        <Link
+          to="/auth"
+          className="text-[10px] tracking-[0.25em] uppercase text-ember border border-ember/30 px-4 py-2 hover:bg-ember/10 transition-colors"
+        >
           Begin Ritual
-        </button>
+        </Link>
       </header>
 
       {/* Hero copy */}
