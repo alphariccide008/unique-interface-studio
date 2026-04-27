@@ -164,3 +164,46 @@
     color: var(--color-foreground);
   }
 }
+
+@layer components {
+  .input-bare {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--vein);
+    padding: 0.625rem 0;
+    color: var(--bone);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.125rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .input-bare::placeholder {
+    color: color-mix(in oklab, var(--ash) 60%, transparent);
+  }
+  .input-bare:focus {
+    border-bottom-color: var(--ember);
+  }
+
+  .btn-ember {
+    width: 100%;
+    background: color-mix(in oklab, var(--ember) 12%, transparent);
+    border: 1px solid var(--ember);
+    color: var(--ember);
+    padding: 0.875rem 1rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    box-shadow: 0 0 30px color-mix(in oklab, var(--ember) 18%, transparent);
+  }
+  .btn-ember:hover:not(:disabled) {
+    background: var(--ember);
+    color: var(--void);
+  }
+  .btn-ember:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
