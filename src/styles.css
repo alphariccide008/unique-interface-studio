@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@200;300;400;500;600&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -59,29 +60,50 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-void: var(--void);
+  --color-velvet: var(--velvet);
+  --color-vein: var(--vein);
+  --color-ember: var(--ember);
+  --color-ember-dim: var(--ember-dim);
+  --color-bone: var(--bone);
+  --color-ash: var(--ash);
+
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Outfit", sans-serif;
 }
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+
+  /* Crimson Destiny palette */
+  --void: oklch(0.08 0.008 20);
+  --velvet: oklch(0.13 0.015 20);
+  --vein: oklch(0.22 0.08 25);
+  --ember: oklch(0.58 0.22 25);
+  --ember-dim: oklch(0.42 0.18 25);
+  --bone: oklch(0.93 0.012 30);
+  --ash: oklch(0.62 0.015 25);
+
+  --background: var(--void);
+  --foreground: var(--bone);
+  --card: var(--velvet);
+  --card-foreground: var(--bone);
+  --popover: var(--velvet);
+  --popover-foreground: var(--bone);
+  --primary: var(--ember);
+  --primary-foreground: var(--void);
+  --secondary: var(--vein);
+  --secondary-foreground: var(--bone);
+  --muted: var(--velvet);
+  --muted-foreground: var(--ash);
+  --accent: var(--ember);
+  --accent-foreground: var(--void);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.22 0.05 25 / 50%);
+  --input: oklch(0.22 0.05 25 / 50%);
+  --ring: var(--ember);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
