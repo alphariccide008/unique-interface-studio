@@ -12,6 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppThreadsRouteImport } from './routes/app.threads'
+import { Route as AppProfileRouteImport } from './routes/app.profile'
+import { Route as AppOnboardingRouteImport } from './routes/app.onboarding'
+import { Route as AppThreadsMatchIdRouteImport } from './routes/app.threads.$matchId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -28,34 +33,97 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppThreadsRoute = AppThreadsRouteImport.update({
+  id: '/threads',
+  path: '/threads',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOnboardingRoute = AppOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppThreadsMatchIdRoute = AppThreadsMatchIdRouteImport.update({
+  id: '/$matchId',
+  path: '/$matchId',
+  getParentRoute: () => AppThreadsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/threads': typeof AppThreadsRouteWithChildren
+  '/app/': typeof AppIndexRoute
+  '/app/threads/$matchId': typeof AppThreadsMatchIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
   '/auth': typeof AuthRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/threads': typeof AppThreadsRouteWithChildren
+  '/app': typeof AppIndexRoute
+  '/app/threads/$matchId': typeof AppThreadsMatchIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/app': typeof AppRoute
+  '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile': typeof AppProfileRoute
+  '/app/threads': typeof AppThreadsRouteWithChildren
+  '/app/': typeof AppIndexRoute
+  '/app/threads/$matchId': typeof AppThreadsMatchIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/auth'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/auth'
+    | '/app/onboarding'
+    | '/app/profile'
+    | '/app/threads'
+    | '/app/'
+    | '/app/threads/$matchId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/auth'
-  id: '__root__' | '/' | '/app' | '/auth'
+  to:
+    | '/'
+    | '/auth'
+    | '/app/onboarding'
+    | '/app/profile'
+    | '/app/threads'
+    | '/app'
+    | '/app/threads/$matchId'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/auth'
+    | '/app/onboarding'
+    | '/app/profile'
+    | '/app/threads'
+    | '/app/'
+    | '/app/threads/$matchId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppRoute: typeof AppRoute
+  AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
 }
 
@@ -82,14 +150,86 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/threads': {
+      id: '/app/threads'
+      path: '/threads'
+      fullPath: '/app/threads'
+      preLoaderRoute: typeof AppThreadsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile': {
+      id: '/app/profile'
+      path: '/profile'
+      fullPath: '/app/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/onboarding': {
+      id: '/app/onboarding'
+      path: '/onboarding'
+      fullPath: '/app/onboarding'
+      preLoaderRoute: typeof AppOnboardingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/threads/$matchId': {
+      id: '/app/threads/$matchId'
+      path: '/$matchId'
+      fullPath: '/app/threads/$matchId'
+      preLoaderRoute: typeof AppThreadsMatchIdRouteImport
+      parentRoute: typeof AppThreadsRoute
+    }
   }
 }
 
+interface AppThreadsRouteChildren {
+  AppThreadsMatchIdRoute: typeof AppThreadsMatchIdRoute
+}
+
+const AppThreadsRouteChildren: AppThreadsRouteChildren = {
+  AppThreadsMatchIdRoute: AppThreadsMatchIdRoute,
+}
+
+const AppThreadsRouteWithChildren = AppThreadsRoute._addFileChildren(
+  AppThreadsRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppOnboardingRoute: typeof AppOnboardingRoute
+  AppProfileRoute: typeof AppProfileRoute
+  AppThreadsRoute: typeof AppThreadsRouteWithChildren
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppOnboardingRoute: AppOnboardingRoute,
+  AppProfileRoute: AppProfileRoute,
+  AppThreadsRoute: AppThreadsRouteWithChildren,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppRoute: AppRoute,
+  AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
