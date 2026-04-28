@@ -16,6 +16,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppThreadsRouteImport } from './routes/app.threads'
 import { Route as AppProfileRouteImport } from './routes/app.profile'
 import { Route as AppOnboardingRouteImport } from './routes/app.onboarding'
+import { Route as AppThreadsMatchIdRouteImport } from './routes/app.threads.$matchId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -52,6 +53,11 @@ const AppOnboardingRoute = AppOnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => AppRoute,
 } as any)
+const AppThreadsMatchIdRoute = AppThreadsMatchIdRouteImport.update({
+  id: '/$matchId',
+  path: '/$matchId',
+  getParentRoute: () => AppThreadsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,16 +65,18 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/profile': typeof AppProfileRoute
-  '/app/threads': typeof AppThreadsRoute
+  '/app/threads': typeof AppThreadsRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/threads/$matchId': typeof AppThreadsMatchIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/profile': typeof AppProfileRoute
-  '/app/threads': typeof AppThreadsRoute
+  '/app/threads': typeof AppThreadsRouteWithChildren
   '/app': typeof AppIndexRoute
+  '/app/threads/$matchId': typeof AppThreadsMatchIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,8 +85,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/app/onboarding': typeof AppOnboardingRoute
   '/app/profile': typeof AppProfileRoute
-  '/app/threads': typeof AppThreadsRoute
+  '/app/threads': typeof AppThreadsRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/threads/$matchId': typeof AppThreadsMatchIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/app/profile'
     | '/app/threads'
     | '/app/'
+    | '/app/threads/$matchId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/app/profile'
     | '/app/threads'
     | '/app'
+    | '/app/threads/$matchId'
   id:
     | '__root__'
     | '/'
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/app/profile'
     | '/app/threads'
     | '/app/'
+    | '/app/threads/$matchId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -166,20 +178,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOnboardingRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/threads/$matchId': {
+      id: '/app/threads/$matchId'
+      path: '/$matchId'
+      fullPath: '/app/threads/$matchId'
+      preLoaderRoute: typeof AppThreadsMatchIdRouteImport
+      parentRoute: typeof AppThreadsRoute
+    }
   }
 }
+
+interface AppThreadsRouteChildren {
+  AppThreadsMatchIdRoute: typeof AppThreadsMatchIdRoute
+}
+
+const AppThreadsRouteChildren: AppThreadsRouteChildren = {
+  AppThreadsMatchIdRoute: AppThreadsMatchIdRoute,
+}
+
+const AppThreadsRouteWithChildren = AppThreadsRoute._addFileChildren(
+  AppThreadsRouteChildren,
+)
 
 interface AppRouteChildren {
   AppOnboardingRoute: typeof AppOnboardingRoute
   AppProfileRoute: typeof AppProfileRoute
-  AppThreadsRoute: typeof AppThreadsRoute
+  AppThreadsRoute: typeof AppThreadsRouteWithChildren
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppOnboardingRoute: AppOnboardingRoute,
   AppProfileRoute: AppProfileRoute,
-  AppThreadsRoute: AppThreadsRoute,
+  AppThreadsRoute: AppThreadsRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
 }
 
