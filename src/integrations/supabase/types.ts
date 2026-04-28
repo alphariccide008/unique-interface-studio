@@ -14,6 +14,101 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_questions: {
+        Row: {
+          created_at: string
+          id: string
+          question: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          question: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          question?: string
+        }
+        Relationships: []
+      }
+      likes: {
+        Row: {
+          action: Database["public"]["Enums"]["like_action"]
+          created_at: string
+          id: string
+          liked_id: string
+          liker_id: string
+        }
+        Insert: {
+          action?: Database["public"]["Enums"]["like_action"]
+          created_at?: string
+          id?: string
+          liked_id: string
+          liker_id: string
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["like_action"]
+          created_at?: string
+          id?: string
+          liked_id?: string
+          liker_id?: string
+        }
+        Relationships: []
+      }
+      matches: {
+        Row: {
+          created_at: string
+          id: string
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          match_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          match_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          match_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profile_photos: {
         Row: {
           created_at: string
@@ -77,15 +172,64 @@ export type Database = {
         }
         Relationships: []
       }
+      spark_answers: {
+        Row: {
+          answer: string
+          created_at: string
+          id: string
+          match_id: string
+          question_id: string
+          spark_date: string
+          user_id: string
+        }
+        Insert: {
+          answer: string
+          created_at?: string
+          id?: string
+          match_id: string
+          question_id: string
+          spark_date?: string
+          user_id: string
+        }
+        Update: {
+          answer?: string
+          created_at?: string
+          id?: string
+          match_id?: string
+          question_id?: string
+          spark_date?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spark_answers_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spark_answers_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "daily_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_in_match: {
+        Args: { _match_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       gender_type: "woman" | "man" | "nonbinary" | "other"
+      like_action: "like" | "pass"
       looking_for_type: "women" | "men" | "everyone"
     }
     CompositeTypes: {
@@ -215,6 +359,7 @@ export const Constants = {
   public: {
     Enums: {
       gender_type: ["woman", "man", "nonbinary", "other"],
+      like_action: ["like", "pass"],
       looking_for_type: ["women", "men", "everyone"],
     },
   },
